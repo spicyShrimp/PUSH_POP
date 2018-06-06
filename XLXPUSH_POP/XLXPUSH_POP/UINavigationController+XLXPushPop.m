@@ -43,7 +43,7 @@
         NSMutableArray *tempArr = [strongSelf.childViewControllers mutableCopy];
         if (tempArr.count>2) {
             for (UIViewController *subvc in self.childViewControllers.reverseObjectEnumerator.allObjects) {
-                if ([subvc isMemberOfClass:popvcClass]) {
+                if ([subvc isKindOfClass:popvcClass]) {
                     NSInteger locate = [tempArr indexOfObject:subvc] + 1;
                     NSInteger length = (tempArr.count - locate - 1);
                     [tempArr removeObjectsInRange:NSMakeRange(locate, length)];
@@ -75,12 +75,10 @@
 
 - (NSArray<__kindof UIViewController *> *)popToViewControllerClass:(Class)viewControllerClass animated:(BOOL)animated completion: (void (^)(void))completion{
     NSArray<__kindof UIViewController*> *viewControllers;
-    if ([viewControllerClass isMemberOfClass:[UIViewController class]]) {
-        for (UIViewController *subvc in self.childViewControllers.reverseObjectEnumerator.allObjects) {
-            if ([subvc isKindOfClass:viewControllerClass]) {
-                viewControllers = [self popToViewController:subvc animated:animated completion:completion];
-                break;
-            }
+    for (UIViewController *subvc in self.childViewControllers.reverseObjectEnumerator.allObjects) {
+        if ([subvc isKindOfClass:viewControllerClass]) {
+            viewControllers = [self popToViewController:subvc animated:animated completion:completion];
+            break;
         }
     }
     return viewControllers;
